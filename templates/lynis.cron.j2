@@ -12,6 +12,10 @@ LOG_EXPIRE={{ lynis_log_expire }}
 FROM="{{ lynis_report_from }}"
 TO="{{ lynis_report_to }}"
 
+INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+ACCOUNT_ID=$(curl http://169.254.169.254/latest/meta-data/identity-credentials/ec2/info | jq -r ".AccountId")
+REGION=$(curl http://instance-data/latest/meta-data/placement/region)
+
 {% if lynis_deploy_method == "pkg" %}
 {% if ansible_os_family == 'Debian' %}
 LYNIS_PATH="/usr/sbin/lynis"
@@ -30,5 +34,5 @@ mv /var/log/lynis-report.dat ${DATA}
 
 find $LOG_DIR -type f -mtime +$LOG_EXPIRE -delete -print
 
-echo "Lynis audit for ${HOST} on ${DATE}: ${REPORT}" |
-/usr/bin/mail -s "${HOST}: Lynis audit (${DATE})" -r ${FROM} -a ${REPORT} ${TO}
+echo "Lynis audit for ${HOST} on ${DATE}: ${REPORT} $(cat ${REPORT})" |
+/usr/bin/mail -s "${ACCOUNT_ID} | ${REGION} | ${INSTANCE_ID} | ${HOST} : Lynis audit (${DATE})" -r ${FROM} ${TO}

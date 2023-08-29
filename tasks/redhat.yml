@@ -3,10 +3,10 @@
 - name: Lynis | RedHat | update prerequisites
   yum:
     name:
-    - ca-certificates
-    - curl
-    - nss
-    - openssl
+      - ca-certificates
+      - curl
+      - nss
+      - openssl
     state: present
 
 - name: Lynis | RedHat | add lynis official repo
@@ -14,12 +14,12 @@
     name: lynis
     description: CISOfy Software - Lynis package
     baseurl: https://packages.cisofy.com/community/lynis/rpm/
-    enabled: yes
+    enabled: true
     gpgkey: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
-    gpgcheck: yes
+    gpgcheck: true
 
 - name: Lynis | RedHat | install lynis package
   yum:
     name: lynis
     state: present
-    update_cache: yes
+    update_cache: true

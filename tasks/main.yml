@@ -2,19 +2,19 @@
 # tasks file for mablanco.lynis
 
 - name: Lynis | lynis_report_from should be defined
-  assert:
+  ansible.builtin.assert:
     that:
-    - lynis_report_from is defined and lynis_report_from | length > 0
+      - lynis_report_from is defined and lynis_report_from | length > 0
     msg: "Set the value of 'lynis_report_from' in either the inventory file or the playbook invoking this role."
 
 - name: Lynis | lynis_report_to should be defined
-  assert:
+  ansible.builtin.assert:
     that:
-    - lynis_report_to is defined and lynis_report_to | length > 0
+      - lynis_report_to is defined and lynis_report_to | length > 0
     msg: "Set the value of 'lynis_report_to' in either the inventory file or the playbook invoking this role."
 
 - name: Lynis | create lynis home
-  file:
+  ansible.builtin.file:
     path: "{{ lynis_home }}"
     mode: 0750
     owner: root
@@ -23,17 +23,17 @@
   when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: Lynis | install git cli client
-  package:
+  ansible.builtin.package:
     name: git
     state: present
   when: lynis_deploy_method == "git"
 
 - name: Lynis | deploy lynis with git
-  git:
+  ansible.builtin.git:
     repo: "{{ lynis_git_repo }}"
-    clone: yes
+    clone: true
     dest: "{{ lynis_home }}"
-    force: yes
+    force: true
     version: "master"
   when: lynis_deploy_method == "git"
 
@@ -46,7 +46,7 @@
   when: lynis_deploy_method == "pkg"
 
 - name: Lynis | create man page directory
-  file:
+  ansible.builtin.file:
     path: /usr/local/share/man/man8/
     mode: 0755
     owner: root
@@ -55,7 +55,7 @@
   when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: Lynis | install man page
-  copy:
+  ansible.builtin.copy:
     src: "{{ lynis_home }}/lynis.8"
     dest: "/usr/local/share/man/man8/"
     mode: 0644
@@ -65,7 +65,7 @@
   when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: Lynis | create lynis etc directory
-  file:
+  ansible.builtin.file:
     path: /etc/lynis
     mode: 0750
     owner: root
@@ -73,17 +73,22 @@
     state: directory
   when: lynis_deploy_method in [ "tar", "git" ]
 
+# - name: Lynis | Copy default.prf to /etc/lynis
+#   ansible.builtin.copy:
+#     src: /opt/lynis/default.prf
+#     dest: /etc/lynis/default.prf
+
 - name: Lynis | install custom profile
-  template:
+  ansible.builtin.template:
     src: lynis.custom.prf.j2
     dest: /etc/lynis/custom.prf
     owner: root
     group: root
-    mode: 0640
+    mode: '0640'
   when: lynis_deploy_method in [ "tar", "git", "pkg" ]
 
 - name: Lynis | create lynis log directory
-  file:
+  ansible.builtin.file:
     path: /var/log/lynis
     mode: 0750
     owner: root
@@ -91,7 +96,7 @@
     state: directory
 
 - name: Lynis | install cron job
-  template:
+  ansible.builtin.template:
     src: lynis.cron.j2
     dest: /usr/local/bin/lynis_cron.sh
     owner: root
@@ -99,7 +104,7 @@
     mode: 0750
 
 - name: Lynis | schedule weekly audit
-  cron:
+  ansible.builtin.cron:
     name: "Launch Lynis security audit"
     hour: "{{ lynis_cron_hour }}"
     minute: "{{ lynis_cron_minute }}"

@@ -1,25 +1,25 @@
 ---
 
 - name: Lynis | Debian | install support for APT thru HTTPS
-  apt:
+  ansible.builtin.apt:
     name: apt-transport-https
     state: present
 
 - name: Lynis | Debian | install lynis official repo key
-  apt_key:
+  ansible.builtin.apt_key:
     keyserver: keyserver.ubuntu.com
     id: C80E383C3DE9F082E01391A0366C67DE91CA5D5F
 
 - name: Lynis | Debian | add lynis official repo
-  copy:
+  ansible.builtin.copy:
     content: "deb https://packages.cisofy.com/community/lynis/deb/ {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/cisofy-lynis.list"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
 - name: Lynis | Debian | install lynis package
-  apt:
+  ansible.builtin.apt:
     name: lynis
     state: present
-    update_cache: yes
+    update_cache: true

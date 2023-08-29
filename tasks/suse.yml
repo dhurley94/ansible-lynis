@@ -3,7 +3,7 @@
 - name: Lynis | SuSE | install lynis official repo key
   rpm_key:
     key: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
-    validate_certs: no
+    validate_certs: false
     state: present
 
 - name: Lynis | SuSE | add lynis official repo
