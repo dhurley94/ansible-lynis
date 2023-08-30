@@ -14,7 +14,7 @@ TO="{{ lynis_report_to }}"
 
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 ACCOUNT_ID=$(curl http://169.254.169.254/latest/meta-data/identity-credentials/ec2/info | jq -r ".AccountId")
-REGION=$(curl http://instance-data/latest/meta-data/placement/region)
+REGION=$(curl http://169.254.169.254/latest/meta-data/placement/region)
 
 {% if lynis_deploy_method == "pkg" %}
 {% if ansible_os_family == 'Debian' %}
