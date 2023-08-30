@@ -2,7 +2,7 @@
 set -x
 
 AUDITOR="automated"
-DATE=$(date +%Y%m%d)
+DATE=$(date +'%Y-%m-%d')
 HOST=$(hostname)
 LOG_DIR="/var/log/lynis"
 REPORT="$LOG_DIR/report-${HOST}.${DATE}.log"
