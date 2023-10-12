@@ -106,8 +106,10 @@
 - name: Lynis | schedule weekly audit
   ansible.builtin.cron:
     name: "Launch Lynis security audit"
-    hour: "{{ lynis_cron_hour }}"
     minute: "{{ lynis_cron_minute }}"
+    hour: "{{ lynis_cron_hour }}"
+    day: "{{ lynis_cron_day }}"
+    month: "{{ lynis_cron_month }}"
     weekday: "{{ lynis_cron_dow }}"
     cron_file: "lynis"
     user: "root"

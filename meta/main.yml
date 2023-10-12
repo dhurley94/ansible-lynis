@@ -8,12 +8,9 @@ galaxy_info:
     - name: GenericUNIX
       versions:
         - all
-        - any
     - name: GenericLinux
       versions:
         - all
-        - any
-
   galaxy_tags:
     - security
 

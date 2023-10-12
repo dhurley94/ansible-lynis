@@ -14,6 +14,8 @@ lynis_git_repo: 'https://github.com/CISOfy/lynis'
 lynis_cron_hour: '6'
 lynis_cron_minute: '30'
 lynis_cron_dow: '7'
+lynis_cron_day: '*'
+lynis_cron_month: '*'
 # cron script vars
 lynis_report_from: ''
 lynis_report_to: ''
